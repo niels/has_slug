@@ -1,0 +1,73 @@
+= has_slug
+== Deliciously slugalizing ActiveRecord & your ActionControllers since Rails 2.2
+
+http://www.github.com/Nielsomat/has_slug
+
+	./script/plugin install git@git://github.com/Nielsomat/has_slug
+	or git submodule add git@git://github.com/Nielsomat/has_slug vendor/plugins/has_slug
+
+has_slug provides an easy way to equip your models with "permalinks" like so:
+
+	class BlogPost < ActiveRecord::Base
+	  has_slug(:category, :title)
+	end
+	
+	post = BlogPost.create(:category => "Time Travelling", :title => "Yatta!")
+	# => #<BlogPost id: 1, category: "Time Travelling", title: "Yatta!">
+	post.to_param
+	# => "1-time-travelling-yatta"
+
+That's nice. But surely not revolutionary. 
+
+So let's turn our attention to the controller which should of course be able to find the record
+identified by the above "permalink". Turns out that Rails kinda does this by default by virtue of
+calling to_i on params[:id] when passing it to ActiveRecord. Easy enough..
+
+But wait, there's more!
+
+Of course this automatic conversion means that your carefully worded "2-honey-you-look-great-in-that-dress" 
+could also be accessed under "2-youre-way-too-fat-for-that-dress-honey". Not so good. In fact, just
+anything matching /^2[\W$]/ would lead to BlogPost.find(2). Besides upsetting your wife and/or
+mistress, this might obvisouly also annoy search engines which have a fetish for unique resource
+itentifiers (i.e. URIs).
+
+But fear not for it has all been taken care of for you!
+
+	class BlogPostsController < ApplicationController
+	  rescue_from_slug_mismatch { |item| redirect_to(blog_post_url(item), :status => :moved_permanently) }
+	
+	  def show
+	    check_slug!(@post = BlogPost.find(params[:id]), params[:id])
+	  end
+	end
+
+And behold: <tt>GET /blog_posts/2-honey-you-look-great-in-that-dress</tt> will render <tt>/blog_posts/show.hmtl.erb</tt>
+while <tt>GET /blog_posts/2-youre-way-too-fat-for-that-dress-honey</tt> will <tt>302</tt> to
+<tt>/blog_posts/2-why-i-love-my-wife</tt>.
+
+Even better though, the above example actually still works when written like this:
+
+	class BlogPostsController < ApplicationController
+	  def show
+	    check_slug!(@post = BlogPost.find(params[:id]))
+	  end
+	end
+
+Because awesomely enough, the second parameter to check_slug! defaults to params[:id] and by 
+default, all ApplicationController descendants are lovingly wired to rescue you from SlugMismatchErrors
+by redirecting to model_url(model).
+
+So what are you waiting for? Just +has_slug+ your models and consider your application awesomified!
+
+
+Copyright (c) 2008 Niels Ganser, released under the MIT license. Even though this software is released
+"as is", I accept full responsibility for any bone fractures that might directly result from using it.
+So in the case of such spontaneous fracturing, feel free contact my armada of lawyers to discuss your
+ridiculously high compensation claims. 
+
+
+<b>All your feature requests / bug reports / patches are belong to github! Or niels at herimedia dot com..</b>
+
+
+Shout-out to Christoffer Sawicki & Henrik Nyh for creating Slugalizer, upon which this plugin was
+originally based (obsolete since Rails 2.2)!
