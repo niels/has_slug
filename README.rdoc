@@ -3,8 +3,8 @@
 
 http://www.github.com/Nielsomat/has_slug
 
-	./script/plugin install git@git://github.com/Nielsomat/has_slug
-	or git submodule add git@git://github.com/Nielsomat/has_slug vendor/plugins/has_slug
+	./script/plugin install git://github.com/Nielsomat/has_slug.git
+	or git submodule add git://github.com/Nielsomat/has_slug.git vendor/plugins/has_slug
 
 has_slug provides an easy way to equip your models with "permalinks" like so:
 
