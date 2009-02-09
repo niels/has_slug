@@ -1,3 +1,5 @@
+# encoding: utf-8
+
 # Slurp in the full Rails stack
 # Takes some time but makes it easier to write the tests..
 # TODO This is temporary, we actually don't want to load the user defined classes
