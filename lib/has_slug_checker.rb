@@ -14,16 +14,9 @@ module HasSlugChecker
   
   def self.included(base) #:nodoc:
     base.class_eval do
-      # Takes a block which is executed upon encountering a SlugMismatchError. The block may feast
-      # on the passed exception to e.g. redirect to a URI containing the correct slug.
-      def self.rescue_from_slug_mismatch(&rescuer)
-        rescue_from "SlugMismatchError" do |exception|
-          rescuer.bind(self).call(exception.item)
-        end
-      end
-      
-      rescue_from_slug_mismatch do |item|
-        redirect_to(send("#{item.class.name.underscore}_url", item), :status => :moved_permanently)
+      # By default we permanently redirect to model_url(model) upon encountering a SlugMismatchError
+      rescue_from SlugMismatchError do |exception|
+        redirect_to(send("#{exception.item.class.name.underscore}_url", exception.item), :status => :moved_permanently)
       end
     end
   end

@@ -34,7 +34,7 @@ itentifiers (i.e. URIs).
 But fear not for it has all been taken care of for you!
 
 	class BlogPostsController < ApplicationController
-	  rescue_from_slug_mismatch { |item| redirect_to(blog_post_url(item), :status => :moved_permanently) }
+	  rescue_from SlugMismatchError { |item| redirect_to(blog_post_url(item), :status => :moved_permanently) }
 	
 	  def show
 	    check_slug!(@post = BlogPost.find(params[:id]), params[:id])
@@ -60,13 +60,13 @@ by redirecting to model_url(model).
 So what are you waiting for? Just +has_slug+ your models and consider your application awesomified!
 
 
-Copyright (c) 2008 Niels Ganser, released under the MIT license. Even though this software is released
+Copyright (c) 2008-2009 Niels Ganser, released under the MIT license. Even though this software is released
 "as is", I accept full responsibility for any bone fractures that might directly result from using it.
 So in the case of such spontaneous fracturing, feel free contact my armada of lawyers to discuss your
 ridiculously high compensation claims. 
 
 
-<b>All your feature requests / bug reports / patches are belong to github! Or niels at herimedia dot com..</b>
+Feel free to send pull requests for found bugs or feature suggestions via Github or just drop me a line via email (niels herimedia com).
 
 
 Shout-out to Christoffer Sawicki & Henrik Nyh for creating Slugalizer, upon which this plugin was

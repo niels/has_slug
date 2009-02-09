@@ -21,22 +21,16 @@ class Slugged < MockBase
   column :id, :integer
   column :category, :string
   column :title, :string
-  
+
   has_slug(:category, :title)
 end
 
 
 class SluggedController < ApplicationController
   cattr_accessor :slugged
-  
+
   def show
     check_slug!(@@slugged)
-  end
-end
-
-class CustomSluggedController < SluggedController
-  rescue_from_slug_mismatch do
-    redirect_to "/somewhere-custom"
   end
 end
 
@@ -46,9 +40,9 @@ Spec::Runner.configure do |config|
   config.before(:each) do
     @slugged = Slugged.new(:category => "Test", :title => "Umlauts anyone? => äöü")
     @slugged.id = 12 # can't set this in .new as it would normally be auto-assigned
-    
+
     SluggedController.slugged = @slugged # feed the controller a model
-    
+
     @valid_id = "12-test-umlauts-anyone-aou" # as we defined a slug as consisting of :category and :title
     @invalid_ids = %w(12 12-test 12-umlauts-anyone-aou random)
   end
