@@ -32,7 +32,7 @@ class SluggedController < ApplicationController
   cattr_accessor :slugged
 
   def show
-    check_slug!(@@slugged)
+    render :inline => check_slug!(@@slugged)
   end
 end
 
