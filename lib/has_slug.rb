@@ -1,3 +1,5 @@
+# encoding: utf-8
+
 # Provides an ActiveRecord to provide the has_slug function with which even a
 # squirrel could easily slugalize all its models.
 #

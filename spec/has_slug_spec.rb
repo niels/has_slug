@@ -1,3 +1,5 @@
+# encoding: utf-8
+
 # See the spec_helper for definition of controller & model classes
 # as well as their setup
 require File.expand_path(File.dirname(__FILE__) + '/spec_helper')

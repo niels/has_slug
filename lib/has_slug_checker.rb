@@ -1,3 +1,5 @@
+# encoding: utf-8
+
 # Provides some awesomity to add to your ActionControllers in order to ease the pain
 # of validating permalinks.
 # 
