@@ -1,3 +1,8 @@
+= Obsolete
+
+This is horribly outdated – use https://github.com/norman/friendly_id instead.
+
+
 = has_slug
 == Deliciously slugalizing ActiveRecord & your ActionControllers since Rails 2.2
 
